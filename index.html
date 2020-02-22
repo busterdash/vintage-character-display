@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Vintage Character Display</title>
+<meta charset="UTF-8" />
+<style>
+
+body {
+    background-color:#446688;
+}
+
+#terminal {
+    width:768px;
+    height:576px;
+    background-color:#1A221A;
+    image-rendering:crisp-edges;
+    padding:32px;
+    position:absolute;
+    top:180px;
+    left:50%;
+    transform:translate(-57.5%,0);
+}
+
+#tv {
+    position:absolute;
+    top:64px;
+    left:50%;
+    transform:translate(-50%,0);
+}
+
+</style>
+</head>
+<body>
+<canvas id="terminal" width="256" height="192"></canvas>
+<img src="tv.png" id="tv" width="1238" height="964">
+<script src="terminal.js"></script>
+</body>
+</html>
