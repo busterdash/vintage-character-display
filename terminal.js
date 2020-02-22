@@ -1,3 +1,23 @@
+/*
+terminal.js
+Copyright 2020 Buster Schrader
+
+This file is part of vintage-character-display.
+
+vintage-character-display is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+any later version.
+
+vintage-character-display is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with vintage-character-display.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 var terminalScreen = (function() {
     
     let charset = [];
@@ -111,39 +131,38 @@ var terminalScreen = (function() {
     function render()
     {
         for (let cy = 0; cy < scheight; cy++) {
-            for (let cx = 0; cx < scwidth; cx++) {
+        for (let cx = 0; cx < scwidth; cx++) {
                 
-                let charIndex = cy*scwidth+cx;
-                let charCode = screenChars[charIndex];
-                if (charCode > 127) charCode = 15;
-                let invertColor = charCode > 63;
-                if (invertColor) charCode = screenChars[charIndex] - 64;
+            let charIndex = cy*scwidth+cx;
+            let charCode = screenChars[charIndex];
+            if (charCode > 127) charCode = 15;
+            let invertColor = charCode > 63;
+            if (invertColor) charCode = screenChars[charIndex] - 64;
+            
+            if (charCode != 0 || invertColor) { //dont bother rendering space unless its inverted
                 
-                if (charCode != 0 || invertColor) { //dont bother rendering space unless its inverted
+                for (let py = 0; py < cheight; py++) {
+                for (let px = 0; px < cwidth; px++) {
                     
-                    for (let py = 0; py < cheight; py++) {
-                        for (let px = 0; px < cwidth; px++) {
-                            
-                            let pxIndex = cwidth*cheight*scwidth*cy;
-                            pxIndex += cwidth*cx;
-                            pxIndex += cwidth*scwidth*py;
-                            pxIndex += px;
-                            pxIndex *= 4;
-                             
-                            if (invertColor ^ get_bit_from_pos(charset[charCode][py],px)) {
-                                img.data[pxIndex+0] = 0;
-                                img.data[pxIndex+1] = 255;
-                                img.data[pxIndex+2] = 0;
-                                img.data[pxIndex+3] = 255;
-                            }
-                        }
+                    let pxIndex = cwidth*cheight*scwidth*cy;
+                    pxIndex += cwidth*cx;
+                    pxIndex += cwidth*scwidth*py;
+                    pxIndex += px;
+                    pxIndex *= 4;
+                     
+                    if (invertColor ^ get_bit_from_pos(charset[charCode][py],px)) {
+                        img.data[pxIndex+0] = 0;
+                        img.data[pxIndex+1] = 255;
+                        img.data[pxIndex+2] = 0;
+                        img.data[pxIndex+3] = 255;
                     }
-                }
+                }}
             }
-        }
+        }}
         
         terminalContext.putImageData(img, 0, 0);
     }
     
     render();
+    
 })();
